@@ -66,3 +66,4 @@ StyleCop.Cache
 *.vs10x
 *.docstates
 *.dotcover
+/packages/*
