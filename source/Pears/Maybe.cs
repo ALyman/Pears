@@ -32,5 +32,17 @@ namespace Pears {
 		public bool HasValue {
 			get { return hasValue; }
 		}
+
+	    public override string ToString()
+	    {
+	        if (HasValue)
+	        {
+	            return $"Some({Value})";
+	        }
+	        else
+	        {
+	            return "None()";
+	        }
+	    }
 	}
 }

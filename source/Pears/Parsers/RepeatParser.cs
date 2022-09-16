@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Pears.Inputs;
 
@@ -41,5 +42,5 @@ namespace Pears.Parsers {
 
 			return results;
 		}
-	}
+    }
 }

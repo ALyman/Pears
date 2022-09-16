@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pears", "source\Pears\Pears.csproj", "{A510487F-A7F8-4DD1-A18F-C5577D5E77D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pears", "source\Pears\Pears.csproj", "{A510487F-A7F8-4DD1-A18F-C5577D5E77D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pears.Tests", "tests\Pears.Tests\Pears.Tests.csproj", "{17262837-773E-4738-8AD8-80476B2CEAF3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pears.Tests", "tests\Pears.Tests\Pears.Tests.csproj", "{17262837-773E-4738-8AD8-80476B2CEAF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pears.Sample.Calculator", "samples\Pears.Sample.Calculator\Pears.Sample.Calculator.csproj", "{46025B7C-4396-41A6-85EA-BAF0B5922083}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pears.Sample.Calculator", "samples\Pears.Sample.Calculator\Pears.Sample.Calculator.csproj", "{46025B7C-4396-41A6-85EA-BAF0B5922083}"
 EndProject
-Project("{FF286327-C783-4F7A-AB73-9BCBAD0D4460}") = "NuGet.Pears", "source\NuGet.Pears\NuGet.Pears.nuproj", "{01F96CFB-07E3-4D50-BD87-EB5BBD3935EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pears.Sample.SignificantWhitespace", "samples\Pears.Sample.SignificantWhitespace\Pears.Sample.SignificantWhitespace.csproj", "{2A5080CD-FF1B-49B7-A698-848B94D58E2C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,12 +29,15 @@ Global
 		{46025B7C-4396-41A6-85EA-BAF0B5922083}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46025B7C-4396-41A6-85EA-BAF0B5922083}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46025B7C-4396-41A6-85EA-BAF0B5922083}.Release|Any CPU.Build.0 = Release|Any CPU
-		{01F96CFB-07E3-4D50-BD87-EB5BBD3935EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{01F96CFB-07E3-4D50-BD87-EB5BBD3935EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{01F96CFB-07E3-4D50-BD87-EB5BBD3935EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{01F96CFB-07E3-4D50-BD87-EB5BBD3935EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A5080CD-FF1B-49B7-A698-848B94D58E2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A5080CD-FF1B-49B7-A698-848B94D58E2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A5080CD-FF1B-49B7-A698-848B94D58E2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A5080CD-FF1B-49B7-A698-848B94D58E2C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {714DA3B4-1F51-489B-AFF9-E47302B94D74}
 	EndGlobalSection
 EndGlobal

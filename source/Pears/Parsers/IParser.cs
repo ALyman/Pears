@@ -7,7 +7,7 @@ namespace Pears.Parsers {
 		Maybe<TResult> TryParse(IInput<TToken> input, out IInput<TToken> finalInput);
 	}
 
-	public abstract class Parser<TToken, TResult> : IParser<TToken, TResult> {
+    public abstract class Parser<TToken, TResult> : IParser<TToken, TResult> {
 		public abstract Maybe<TResult> TryParse(IInput<TToken> input, out IInput<TToken> finalInput);
-	}
+    }
 }

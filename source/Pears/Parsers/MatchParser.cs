@@ -21,5 +21,5 @@ namespace Pears.Parsers {
 				return Maybe<TResult>.Empty;
 			}
 		}
-	}
+    }
 }

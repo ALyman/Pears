@@ -68,3 +68,4 @@ StyleCop.Cache
 *.dotcover
 *.dotsettings
 packages/*/*
+.vs/

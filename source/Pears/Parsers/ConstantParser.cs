@@ -1,4 +1,5 @@
 ﻿using Pears.Inputs;
+using System;
 
 namespace Pears.Parsers {
 	internal class ConstantParser<TToken, TResult> : Parser<TToken, TResult> {
@@ -12,5 +13,5 @@ namespace Pears.Parsers {
 			finalInput = input;
 			return result;
 		}
-	}
+    }
 }

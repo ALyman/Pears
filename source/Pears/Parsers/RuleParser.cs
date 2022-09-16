@@ -21,5 +21,5 @@ namespace Pears.Parsers {
 
 			return boundParser.TryParse(input, out finalInput);
 		}
-	}
+    }
 }

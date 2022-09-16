@@ -40,7 +40,7 @@ namespace Pears.Tests {
 			Assert.That(finalInput, Is.SameAs(input));
 		}
 
-		protected IEnumerable<int> IntsTestData() {
+		protected static IEnumerable<int> IntsTestData() {
 			var r = new Random(0);
 			return Enumerable.Range(0, 5).Select(i => r.Next());
 		}

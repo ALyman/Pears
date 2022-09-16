@@ -24,7 +24,7 @@ namespace Pears.Tests {
 			return result;
 		}
 
-		public int CallCount { get; private set; }
+        public int CallCount { get; private set; }
 	}
 
 	static class MockParser {

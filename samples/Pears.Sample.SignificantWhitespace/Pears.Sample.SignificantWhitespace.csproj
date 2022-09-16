@@ -1,12 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectGuid>{17262837-773E-4738-8AD8-80476B2CEAF3}</ProjectGuid>
+    <ProjectGuid>{2A5080CD-FF1B-49B7-A698-848B94D58E2C}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <TargetFrameworks>netcoreapp3.1;net45;net472;net48;net5.0;net6.0</TargetFrameworks>
-    <AssemblyTitle>Pears.Tests</AssemblyTitle>
-    <Product>Pears.Tests</Product>
-    <Copyright>Copyright ©  2013</Copyright>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <AssemblyTitle>Pears.Sample.SignificantWhitespace</AssemblyTitle>
+    <Product>Pears.Sample.SignificantWhitespace</Product>
+    <Copyright>Copyright ©  2016</Copyright>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <IsPackable>false</IsPackable>
+    <StartupObject>Pears.Sample.SignificantWhitespace.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -19,8 +22,6 @@
     <PackageReference Include="coverlet.collector" Version="3.0.2" />
     <PackageReference Include="NUnit" Version="3.13.2" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.1.0" />
-    <PackageReference Include="NBuilder" Version="6.1.0" />
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.*" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\source\Pears\Pears.csproj" />
