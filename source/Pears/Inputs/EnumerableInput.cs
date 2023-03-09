@@ -34,18 +34,19 @@ namespace Pears.Inputs {
 		}
 
 		public IInput<TToken> Next {
-			get {
-				if (next != null) {
+			get
+            {
+                if (next != null) {
 					return next;
-				} else {
-					EnsureRead();
-					if (endOfStream) {
-						return this;
-					} else {
-						return next = new EnumerableInput<TToken>(enumerator);
-					}
 				}
-			}
+
+                EnsureRead();
+                if (endOfStream) {
+                    return this;
+                }
+
+                return next = new EnumerableInput<TToken>(enumerator);
+            }
 		}
 
 		private void EnsureRead() {

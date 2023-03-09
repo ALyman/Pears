@@ -18,9 +18,26 @@ namespace Pears
             }
         }
 
-        public static IInput<TToken> AsInput<TToken>(this IEnumerable<TToken> source)
+        public static EnumerableInput<TToken> AsInput<TToken>(this IEnumerable<TToken> source)
         {
             return new EnumerableInput<TToken>(source);
+        }
+
+        public static ListInput<TToken> AsInput<TToken>(this IList<TToken> source)
+        {
+            return new ListInput<TToken>(source);
+        }
+
+#if NET5_0_OR_GREATER
+        public static MemoryInput<TToken> AsInput<TToken>(this Memory<TToken> source)
+        {
+            return new MemoryInput<TToken>(source);
+        }
+#endif
+
+        public static StringInput AsInput(this string source)
+        {
+            return new StringInput(source);
         }
 
         public static IInput<TToken> Concat<TToken>(this IInput<TToken> first, params IInput<TToken>[] rest)
