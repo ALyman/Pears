@@ -1,12 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProjectGuid>{17262837-773E-4738-8AD8-80476B2CEAF3}</ProjectGuid>
-    <TargetFrameworks>netcoreapp3.1;net45;net472;net48;net5.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;net45;net472;net48;net5.0;net6.0;net7.0</TargetFrameworks>
     <AssemblyTitle>Pears.Tests</AssemblyTitle>
     <Product>Pears.Tests</Product>
     <Copyright>Copyright ©  2013</Copyright>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <IsPackable>false</IsPackable>
+    <LangVersion>11</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -17,6 +18,10 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
     <PackageReference Include="coverlet.collector" Version="3.0.2" />
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="NUnit" Version="3.13.2" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.1.0" />
     <PackageReference Include="NBuilder" Version="6.1.0" />

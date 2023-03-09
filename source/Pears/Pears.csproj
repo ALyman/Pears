@@ -1,9 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProjectGuid>{A510487F-A7F8-4DD1-A18F-C5577D5E77D0}</ProjectGuid>
-    <TargetFrameworks>netstandard2.1;netcoreapp3.1;net45;net472;net48;net5.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;netcoreapp3.1;net45;net472;net48;net5.0;net6.0;net7.0</TargetFrameworks>
     <AssemblyTitle>Pears</AssemblyTitle>
     <Product>Pears</Product>
-    <Copyright>Copyright ©  2013</Copyright>
+    <Copyright>Copyright © 2013 Alex Lyman</Copyright>
+    <LangVersion>11</LangVersion>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
 </Project>

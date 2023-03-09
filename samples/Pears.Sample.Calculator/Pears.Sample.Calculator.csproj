@@ -2,13 +2,14 @@
   <PropertyGroup>
     <ProjectGuid>{46025B7C-4396-41A6-85EA-BAF0B5922083}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp3.1;net45;net472;net48;net5.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;net45;net472;net48;net5.0;net6.0;net7.0</TargetFrameworks>
     <AssemblyTitle>Pears.Sample.Calculator</AssemblyTitle>
     <Product>Pears.Sample.Calculator</Product>
     <Copyright>Copyright ©  2013</Copyright>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <IsPackable>false</IsPackable>
     <StartupObject>Pears.Sample.Calculator.Program</StartupObject>
+    <LangVersion>11</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -19,6 +20,10 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
     <PackageReference Include="coverlet.collector" Version="3.0.2" />
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="NUnit" Version="3.13.2" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.1.0" />
   </ItemGroup>
