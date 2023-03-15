@@ -18,6 +18,15 @@ namespace Pears
             }
         }
 
+        public static IEnumerable<IInput<TToken>> AsInputEnumerable<TToken>(this IInput<TToken> source)
+        {
+            while (!source.IsEndOfStream)
+            {
+                yield return source;
+                source = source.Next;
+            }
+        }
+
         public static EnumerableInput<TToken> AsInput<TToken>(this IEnumerable<TToken> source)
         {
             return new EnumerableInput<TToken>(source);
@@ -78,6 +87,65 @@ namespace Pears
         public static IInput<TToken> Where<TToken>(this IInput<TToken> source, Func<TToken, bool> predicate)
         {
             return new WhereInput<TToken>(source, predicate);
+        }
+
+        public static IInput<char> TrackLines(this IInput<char> source)
+        {
+            if (source is LineTrackingInput positionTrackingInput)
+            {
+                return positionTrackingInput;
+            }
+            return new LineTrackingInput(source);
+        }
+
+        public static IInput<TToken> TrackPosition<TToken>(this IInput<TToken> source)
+        {
+            if (source is PositionTrackingInput<TToken> positionTrackingInput)
+            {
+                return positionTrackingInput;
+            }
+            return new PositionTrackingInput<TToken>(source);
+        }
+
+        public static bool TryGetPosition<T>(this IInput<T> input, out int position)
+        {
+            IInput at = input;
+            while (true)
+            {
+                switch (at)
+                {
+                    case IPositionTrackingInput { Position: var p }:
+                        position = p;
+                        return true;
+                    case IWrappedInput { WrappedInput: { } i }:
+                        at = i;
+                        continue;
+                    default:
+                        position = default;
+                        return false;
+                }
+            }
+        }
+
+        public static bool TryGetLine<T>(this IInput<T> input, out int line, out int column)
+        {
+            IInput at = input;
+            while (true)
+            {
+                switch (at)
+                {
+                    case ILineTrackingInput { Line: var l, Column: var c }:
+                        line = l;
+                        column = c;
+                        return true;
+                    case IWrappedInput { WrappedInput: { } i }:
+                        at = i;
+                        continue;
+                    default:
+                        line = column = default;
+                        return false;
+                }
+            }
         }
     }
 }

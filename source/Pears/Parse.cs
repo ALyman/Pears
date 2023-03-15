@@ -3,9 +3,15 @@ using System.Linq;
 
 using Pears.Parsers;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Pears {
 	public static class Parse {
+        public static IParser<string, string> Match(Regex regex)
+        {
+            return Match<string>(regex.IsMatch);
+        }
+
 		public static IParser<TToken, TToken> Match<TToken>(TToken token) {
 			return Match<TToken>(token, EqualityComparer<TToken>.Default);
 		}
@@ -41,7 +47,7 @@ namespace Pears {
 			);
 		}
 
-		private static IParser<TToken, TResult> Constant<TToken, TResult>(TResult result) {
+        public static IParser<TToken, TResult> Constant<TToken, TResult>(TResult result) {
 			return new ConstantParser<TToken, TResult>(result);
 		}
 
@@ -54,14 +60,19 @@ namespace Pears {
 		}
 
 		public static IParser<TToken, TResult> SelectMany<TToken, T1, T2, TResult>(this IParser<TToken, T1> first, Func<T1, IParser<TToken, T2>> second, Func<T1, T2, TResult> selector) {
-			return Concat(selector, first, second(default(T1)));
+			return Concat(selector, first, second(default));
 		}
 
 		public static IParser<TToken, IEnumerable<TResult>> Repeat<TToken, TResult>(this IParser<TToken, TResult> parser, int minimum = 0, int maximum = int.MaxValue) {
 			return new RepeatParser<TToken, TResult>(parser, minimum, maximum);
 		}
 
-		public static IParser<TToken, IEnumerable<TResult>> ZeroOrMore<TToken, TResult>(this IParser<TToken, TResult> parser) {
+        public static IParser<TToken, IEnumerable<TResult>> Repeat<TToken, TDelimiter, TResult>(this IParser<TToken, TResult> parser, IParser<TToken, TDelimiter> delimiter, int minimum = 0, int maximum = int.MaxValue)
+        {
+            return new DelimitedRepeatParser<TToken, TDelimiter, TResult>(parser, delimiter, minimum, maximum);
+        }
+
+        public static IParser<TToken, IEnumerable<TResult>> ZeroOrMore<TToken, TResult>(this IParser<TToken, TResult> parser) {
 			return Repeat(parser, minimum: 0, maximum: int.MaxValue);
 		}
 
@@ -69,12 +80,28 @@ namespace Pears {
 			return Repeat(parser, minimum: 1, maximum: int.MaxValue);
 		}
 
-		public static RuleParser<TToken, TResult> Rule<TToken, TResult>() {
+        public static IParser<TToken, IEnumerable<TResult>> ZeroOrOne<TToken, TResult>(this IParser<TToken, TResult> parser)
+        {
+            return Repeat(parser, minimum: 0, maximum: 1);
+        }
+
+        public static IParser<TToken, Maybe<TResult>> Optional<TToken, TResult>(this IParser<TToken, TResult> parser)
+        {
+            return Repeat(parser, minimum: 0, maximum: 1)
+                .Select(r => r.Aggregate(Maybe<TResult>.Empty, (_, value) => value));
+        }
+
+        public static RuleParser<TToken, TResult> Rule<TToken, TResult>() {
 			return new RuleParser<TToken, TResult>();
 		}
 
 		public static IParser<TToken, TResult> Select<TToken, TSource, TResult>(this IParser<TToken, TSource> parser, Func<TSource, TResult> selector) {
 			return new ProjectionParser<TToken, TSource, TResult>(parser, selector);
 		}
-	}
+
+        public static IParser<TToken, IEnumerable<TToken>> TokenRange<TToken, TResult>(this IParser<TToken, TResult> parser)
+        {
+            return new TokenRangeParser<TToken, TResult>(parser);
+        }
+    }
 }

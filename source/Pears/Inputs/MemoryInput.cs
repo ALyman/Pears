@@ -45,6 +45,8 @@ public class MemoryInput<T> : IInput<T>
             return _next = new MemoryInput<T>(_text, _position + 1);
         }
     }
+
+    IInput IInput.Next => this.Next;
 }
 
 #endif

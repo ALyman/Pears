@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace Pears.Inputs {
-	public class WhereInput<TToken> : IInput<TToken>
+	public class WhereInput<TToken> : IInput<TToken>, IWrappedInput
 	{
 		private readonly IInput<TToken> startInput;
 		private IInput<TToken> finalInput;
@@ -56,5 +56,8 @@ namespace Pears.Inputs {
                 return next = new WhereInput<TToken>(finalInput.Next, predicate);
 			}
 		}
-	}
+
+        IInput IInput.Next => this.Next;
+        IInput IWrappedInput.WrappedInput => this.startInput;
+    }
 }

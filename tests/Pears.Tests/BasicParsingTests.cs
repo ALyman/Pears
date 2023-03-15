@@ -49,14 +49,14 @@ namespace Pears.Tests {
 		public void SuccessfulConcat() {
 			var input = new MockInput<int>(3);
 			var first = MockParser.Create(result: 1, expectedInput: input);
-			var second = MockParser.Create(result: 2, expectedInput: input.Next);
+			var second = MockParser.Create(result: 2, expectedInput: input.Skip(1));
 
 			var parser = Parse.Concat(Tuple.Create, first, second);
 
 			IInput<int> finalInput;
 			var result = parser.TryParse(input, out finalInput);
 			Assert.That(result.HasValue, Is.True);
-			Assert.That(finalInput, Is.SameAs(input.Next.Next));
+			Assert.That(finalInput, Is.SameAs(input.Skip(2)));
 			Assert.That(result.Value, Is.EqualTo(Tuple.Create(1, 2)));
 		}
 
@@ -64,15 +64,15 @@ namespace Pears.Tests {
 		public void SuccessfulMultiConcat() {
 			var input = new MockInput<int>(3);
 			var first = MockParser.Create(result: 1, expectedInput: input);
-			var second = MockParser.Create(result: 2, expectedInput: input.Next);
-			var third = MockParser.Create(result: 3, expectedInput: input.Next.Next);
+			var second = MockParser.Create(result: 2, expectedInput: input.Skip(1));
+			var third = MockParser.Create(result: 3, expectedInput: input.Skip(2));
 
 			var parser = Parse.Concat(first, second, third);
 
 			IInput<int> finalInput;
 			var result = parser.TryParse(input, out finalInput);
 			Assert.That(result.HasValue, Is.True);
-			Assert.That(finalInput, Is.SameAs(input.Next.Next.Next));
+			Assert.That(finalInput, Is.SameAs(input.Skip(3)));
 			Assert.That(result.Value, Is.EqualTo(new[] { 1, 2, 3 }));
 		}
 
@@ -90,19 +90,19 @@ namespace Pears.Tests {
 				case "failFirst":
 					expectedFinalInput = input;
 					first = MockParser.Create(result: Maybe<int>.Empty, expectedInput: input);
-					second = MockParser.Create(result: 2, expectedInput: input.Next);
+					second = MockParser.Create(result: 2, expectedInput: input.Skip(1));
 					break;
 
 				case "failSecond":
 					expectedFinalInput = input;
 					first = MockParser.Create(result: 1, expectedInput: input);
-					second = MockParser.Create(result: Maybe<int>.Empty, expectedInput: input.Next);
+					second = MockParser.Create(result: Maybe<int>.Empty, expectedInput: input.Skip(1));
 					break;
 
 				case "failBoth":
 					expectedFinalInput = input;
 					first = MockParser.Create(result: Maybe<int>.Empty, expectedInput: input);
-					second = MockParser.Create(result: Maybe<int>.Empty, expectedInput: input.Next);
+					second = MockParser.Create(result: Maybe<int>.Empty, expectedInput: input.Skip(1));
 					break;
 
 				default:
@@ -115,7 +115,7 @@ namespace Pears.Tests {
 			var result = parser.TryParse(input, out finalInput);
 			Assert.That(result.HasValue, Is.False);
 			Assert.That(finalInput, Is.SameAs(expectedFinalInput));
-			if (expectedFinalInput == input.Next) {
+			if (expectedFinalInput == input.Skip(1)) {
 				Assert.That(second.CallCount, Is.EqualTo(0));
 			}
 		}
@@ -134,14 +134,14 @@ namespace Pears.Tests {
 
 			switch (whichFailed) {
 				case "success":
-					expectedFinalInput = input.Next;
+					expectedFinalInput = input.Skip(1);
 					expectedResult = 1;
 					first = MockParser.Create(result: 1, expectedInput: input);
 					second = MockParser.Create(result: 2, expectedInput: input);
 					break;
 
 				case "failFirst":
-					expectedFinalInput = input.Next;
+					expectedFinalInput = input.Skip(1);
 					expectedResult = 2;
 					first = MockParser.Create(result: Maybe<int>.Empty, expectedInput: input);
 					second = MockParser.Create(result: 2, expectedInput: input);
@@ -149,7 +149,7 @@ namespace Pears.Tests {
 
 				case "failSecond":
 					expectedResult = 1;
-					expectedFinalInput = input.Next;
+					expectedFinalInput = input.Skip(1);
 					first = MockParser.Create(result: 1, expectedInput: input);
 					second = MockParser.Create(result: Maybe<int>.Empty, expectedInput: input);
 					break;
@@ -183,14 +183,14 @@ namespace Pears.Tests {
 		}
 
 		[Test]
-		public void SucessfulRepeatZeroOrMore() {
+		public void SuccessfulRepeatZeroOrMore() {
 			var input = new MockInput<int>(3);
 
 			var inner = new MockParser<int, int> {
 				{ input, 1 },
-				{ input.Next, 2 },
-				{ input.Next.Next, 3 },
-				{ input.Next.Next.Next, Maybe<int>.Empty }
+				{ input.Skip(1), 2 },
+				{ input.Skip(2), 3 },
+				{ input.Skip(3), Maybe<int>.Empty }
 			};
 
 			var parser = inner.ZeroOrMore();
@@ -199,7 +199,7 @@ namespace Pears.Tests {
 			var result = parser.TryParse(input, out finalInput);
 			Assert.That(result.HasValue, Is.True);
 			Assert.That(result.Value, Is.EqualTo(new[] { 1, 2, 3 }.AsEnumerable()));
-			Assert.That(finalInput, Is.SameAs(input.Next.Next.Next));
+			Assert.That(finalInput, Is.SameAs(input.Skip(3)));
 		}
 
 		[Test]
@@ -220,14 +220,14 @@ namespace Pears.Tests {
 		}
 
 		[Test]
-		public void SucessfulRepeatOneOrMore() {
+		public void SuccessfulRepeatOneOrMore() {
 			var input = new MockInput<int>(3);
 
 			var inner = new MockParser<int, int> {
 				{ input, 1 },
-				{ input.Next, 2 },
-				{ input.Next.Next, 3 },
-				{ input.Next.Next.Next, Maybe<int>.Empty }
+				{ input.Skip(1), 2 },
+				{ input.Skip(2), 3 },
+				{ input.Skip(3), Maybe<int>.Empty }
 			};
 
 			var parser = inner.OneOrMore();
@@ -236,7 +236,7 @@ namespace Pears.Tests {
 			var result = parser.TryParse(input, out finalInput);
 			Assert.That(result.HasValue, Is.True);
 			Assert.That(result.Value, Is.EqualTo(new[] { 1, 2, 3 }.AsEnumerable()));
-			Assert.That(finalInput, Is.SameAs(input.Next.Next.Next));
+			Assert.That(finalInput, Is.SameAs(input.Skip(3)));
 		}
 
 		[Test]
@@ -256,14 +256,14 @@ namespace Pears.Tests {
 		}
 
 		[Test]
-		public void SucessfulRepeatExactly2() {
+		public void SuccessfulRepeatExactly2() {
 			var input = new MockInput<int>(3);
 
 			var inner = new MockParser<int, int> {
 				{ input, 1 },
-				{ input.Next, 2 },
-				{ input.Next.Next, 3 },
-				{ input.Next.Next.Next, Maybe<int>.Empty }
+				{ input.Skip(1), 2 },
+				{ input.Skip(2), 3 },
+				{ input.Skip(3), Maybe<int>.Empty }
 			};
 
 			var parser = inner.Repeat(minimum: 2, maximum: 2);
@@ -272,10 +272,37 @@ namespace Pears.Tests {
 			var result = parser.TryParse(input, out finalInput);
 			Assert.That(result.HasValue, Is.True);
 			Assert.That(result.Value, Is.EqualTo(new[] { 1, 2 }.AsEnumerable()));
-			Assert.That(finalInput, Is.SameAs(input.Next.Next));
+			Assert.That(finalInput, Is.SameAs(input.Skip(2)));
 		}
 
-		[Test]
+
+        [Test]
+        public void SuccessfulDelimitedRepeatExactly2()
+        {
+            var input = new MockInput<int>(5);
+
+            var inner = new MockParser<int, int> {
+                { input.Skip(0), 1 },
+                { input.Skip(2), 3 },
+                { input.Skip(4), 5 },
+                { input.Skip(5), Maybe<int>.Empty }
+            };
+
+            var delimiter = new MockParser<int, int> {
+                { input.Skip(1), 2 },
+                { input.Skip(3), 4 },
+            };
+
+            var parser = inner.Repeat(delimiter, minimum: 2, maximum: 2);
+
+            IInput<int> finalInput;
+            var result = parser.TryParse(input, out finalInput);
+            Assert.That(result.HasValue, Is.True);
+            Assert.That(result.Value, Is.EqualTo(new[] { 1, 3 }.AsEnumerable()));
+            Assert.That(finalInput, Is.SameAs(input.Skip(3)));
+        }
+
+        [Test]
 		public void BoundRuleParser() {
 			var input = new MockInput<int>(3);
 
@@ -288,7 +315,7 @@ namespace Pears.Tests {
 			var result = parser.TryParse(input, out finalInput);
 			Assert.That(result.HasValue, Is.True);
 			Assert.That(result.Value, Is.EqualTo(1));
-			Assert.That(finalInput, Is.SameAs(input.Next));
+			Assert.That(finalInput, Is.SameAs(input.Skip(1)));
 		}
 
 		[Test]

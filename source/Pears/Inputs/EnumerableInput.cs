@@ -1,64 +1,66 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-namespace Pears.Inputs {
-	public sealed class EnumerableInput<TToken> : IInput<TToken> {
-		private readonly IEnumerator<TToken> enumerator;
-		private bool haveRead, endOfStream;
-		private TToken token;
-		private EnumerableInput<TToken> next;
+namespace Pears.Inputs;
 
-		public EnumerableInput(IEnumerable<TToken> source)
-			: this(source.GetEnumerator()) {
-		}
+public sealed class EnumerableInput<TToken> : IInput<TToken> {
+    private readonly IEnumerator<TToken> enumerator;
+    private bool haveRead, endOfStream;
+    private TToken token;
+    private EnumerableInput<TToken> next;
 
-		private EnumerableInput(IEnumerator<TToken> enumerator) {
-			this.enumerator = enumerator;
-		}
+    public EnumerableInput(IEnumerable<TToken> source)
+        : this(source.GetEnumerator()) {
+    }
 
-		public bool IsEndOfStream {
-			get {
-				EnsureRead();
-				return endOfStream;
-			}
-		}
+    private EnumerableInput(IEnumerator<TToken> enumerator) {
+        this.enumerator = enumerator;
+    }
 
-		public TToken Token {
-			get {
-				EnsureRead();
-				if (endOfStream) {
-					throw new EndOfStreamException();
-				}
-				return token;
-			}
-		}
+    public bool IsEndOfStream {
+        get {
+            EnsureRead();
+            return endOfStream;
+        }
+    }
 
-		public IInput<TToken> Next {
-			get
-            {
-                if (next != null) {
-					return next;
-				}
-
-                EnsureRead();
-                if (endOfStream) {
-                    return this;
-                }
-
-                return next = new EnumerableInput<TToken>(enumerator);
+    public TToken Token {
+        get {
+            EnsureRead();
+            if (endOfStream) {
+                throw new EndOfStreamException();
             }
-		}
+            return token;
+        }
+    }
 
-		private void EnsureRead() {
-			if (!haveRead) {
-				if (enumerator.MoveNext()) {
-					endOfStream = false;
-					token = enumerator.Current;
-				} else {
-					endOfStream = true;
-				}
-				haveRead = true;
-			}
-		}
-	}
+    public IInput<TToken> Next {
+        get
+        {
+            if (next != null) {
+                return next;
+            }
+
+            EnsureRead();
+            if (endOfStream) {
+                return this;
+            }
+
+            return next = new EnumerableInput<TToken>(enumerator);
+        }
+    }
+
+    private void EnsureRead() {
+        if (!haveRead) {
+            if (enumerator.MoveNext()) {
+                endOfStream = false;
+                token = enumerator.Current;
+            } else {
+                endOfStream = true;
+            }
+            haveRead = true;
+        }
+    }
+
+    IInput IInput.Next => this.Next;
 }

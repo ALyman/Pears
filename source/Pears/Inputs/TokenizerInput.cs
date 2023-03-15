@@ -5,7 +5,7 @@ using Pears.Parsers;
 
 namespace Pears.Inputs
 {
-    public class TokenizerInput<TSource, TResult> : IInput<TResult>
+    public class TokenizerInput<TSource, TResult> : IInput<TResult>, IWrappedInput
     {
         private readonly IParser<TSource, TResult> tokenizer;
         private IInput<TSource> startInput;
@@ -65,8 +65,27 @@ namespace Pears.Inputs
         {
             if (finalInput == null)
             {
-                this.token = tokenizer.TryParse(startInput, out finalInput);
+                var t = tokenizer.TryParse(startInput, out finalInput);
+                if (!t.HasValue)
+                {
+                    if (startInput.TryGetPosition(out var position))
+                    {
+                        if (startInput.TryGetLine(out var line, out var column))
+                        {
+                            throw new Exception($"Parse failed at L{line}C{column}: '{string.Join(",", startInput.AsEnumerable())}'");
+                        }
+                        throw new Exception($"Parse failed at {position}: '{string.Join(",", startInput.AsEnumerable())}'");
+                    }
+                    else
+                    {
+                        throw new Exception($"Parse failed at: '{string.Join(",", startInput.AsEnumerable())}'");
+                    }
+                }
+                this.token = t;
             }
         }
+
+        IInput IInput.Next => this.Next;
+        IInput IWrappedInput.WrappedInput => this.startInput;
     }
 }

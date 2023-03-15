@@ -48,5 +48,7 @@ namespace Pears.Inputs
                 return _next = new StringInput(_text, _position + 1);
             }
         }
+
+        IInput IInput.Next => this.Next;
     }
 }

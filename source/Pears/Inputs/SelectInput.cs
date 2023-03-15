@@ -2,7 +2,7 @@ using System;
 
 namespace Pears.Inputs
 {
-    public class SelectInput<TSource, TResult> : IInput<TResult>
+    public class SelectInput<TSource, TResult> : IInput<TResult>, IWrappedInput
     {
         private Maybe<TResult> token = Maybe<TResult>.Empty;
         private readonly IInput<TSource> startInput;
@@ -49,5 +49,8 @@ namespace Pears.Inputs
                 return next = new SelectInput<TSource, TResult>(startInput.Next, selector);
             }
         }
+
+        IInput IInput.Next => this.Next;
+        IInput IWrappedInput.WrappedInput => this.startInput;
     }
 }
